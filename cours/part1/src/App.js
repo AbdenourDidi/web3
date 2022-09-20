@@ -1,6 +1,6 @@
 import React from "react"
 
-const footer = () => {
+const Footer = () => {
   return (
     <div>
       greeting app created by <a href='https://github.com/mluukkai'>mluukkai</a>
@@ -18,7 +18,7 @@ const App = () => {
     <div>
       <h1>Greeting</h1>
       <Hello name = 'Maya' age ={26 + 10}/>
-      <footer />
+      <Footer />
     </div>
   )
 }
