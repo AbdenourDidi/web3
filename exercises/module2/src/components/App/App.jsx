@@ -5,15 +5,16 @@ import Display from "components/Display/Display";
 
 const App = () => {
   const [counter, setCounter] = useState(0);
-  const plus = () => setCounter(counter + 1);
-  const minus = () => setCounter(counter - 1);
-  const zero = () => setCounter(0);
+  const changeCount = (delta) => {
+    setCounter(counter + delta);
+  };
+
   return (
     <div>
       <Display counter={counter} />
-      <Button onClick={plus} text="plus" />
-      <Button onClick={minus} text="minus" />
-      <Button onClick={zero} text="zero" />
+      <Button changeCount={changeCount} text="plus" delta={+1} />
+      <Button changeCount={changeCount} text="minus" delta={-1} />
+      <Button changeCount={changeCount} text="zero" delta={-counter} />
     </div>
   );
 };
