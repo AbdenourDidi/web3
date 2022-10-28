@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { request, response } = require("express");
 const express = require("express");
+const person = require("./models/person");
 const app = express();
 const Person = require("./models/person");
 
@@ -41,4 +42,13 @@ app.get("/api/persons/", (request, response) => {
       response.json(person);
     });
   });
+});
+
+app.post("/api/persons/", (request, response) => {
+  const person = new Person({
+    name: request.body.name,
+    num: request.body.num,
+  });
+  person.save();
+  return response.json(person);
 });
