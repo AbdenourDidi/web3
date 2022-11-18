@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
+const { v4: uuid } = require("uuid");
 
 let authors = [
   {
@@ -96,7 +97,7 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String
+    author: String!
     id: ID!
     genres: [String!]!
   }
@@ -111,8 +112,19 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+  }
+
+  type Mutation {
+    addBook(
+      title: String!
+      published: Int!
+      author: String!
+      genres: [String!]!
+    ): Book
+
+    editAuthor(name: String!, born: Int!): Author
   }
 `;
 
@@ -121,10 +133,15 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-      if (!args.author) {
-        return books;
+      let tableBook = books;
+      if (args.genre) {
+        tableBook = tableBook.filter((b) => b.genres.includes(args.genre));
       }
-      return books.filter((b) => b.author === args.author);
+
+      if (args.author) {
+        tableBook = tableBook.filter((b) => b.author === args.author);
+      }
+      return tableBook;
     },
     allAuthors: () => authors,
   },
@@ -133,6 +150,35 @@ const resolvers = {
     bookCount: (root) => {
       const bookAuthor = books.filter((b) => b.author === root.name);
       return bookAuthor.length;
+    },
+  },
+
+  Mutation: {
+    addBook: (root, args) => {
+      let bookAuthor = books.find((b) => b.author === args.author);
+      if (bookAuthor === undefined) {
+        const author = {
+          name: args.author,
+          born: null,
+          bookCount: 1,
+        };
+        authors = authors.concat(author);
+      }
+
+      const book = { ...args, id: uuid() };
+
+      books = books.concat(book);
+      return book;
+    },
+    editAuthor: (root, args) => {
+      let author = authors.find((a) => a.name === args.name);
+      if (author === undefined) {
+        return null;
+      }
+      author.name = args.name;
+      author.born = args.born;
+
+      return author;
     },
   },
 };
