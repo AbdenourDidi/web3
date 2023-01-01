@@ -15,6 +15,7 @@ const AddButton = () => {
       onSubmit={(e) => {
         e.preventDefault();
         createOpinion(newOpinion);
+        setNewOpinion("");
       }}
     >
       <input value={newOpinion} onChange={handleOpinionChange} />
