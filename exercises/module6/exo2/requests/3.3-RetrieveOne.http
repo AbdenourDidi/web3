@@ -1,0 +1,15 @@
+@hostname = localhost
+@port = 3001
+@gameId = 3
+@missingGameId = 5
+@host = http://{{hostname}}:{{port}}
+
+###
+
+GET {{host}}/api/games/{{gameId}} HTTP/1.1
+Accept: application/json
+
+###
+
+GET {{host}}/api/games/{{missingGameId}} HTTP/1.1
+Accept: application/json
