@@ -9,8 +9,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "pokemon",
-  "create": "nintendo"
+  "name": "genshin",
+  "create": "mihoyo"
 }
 
 

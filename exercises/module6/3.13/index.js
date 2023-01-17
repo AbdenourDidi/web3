@@ -37,11 +37,7 @@ app.listen(PORT, () => {
 });
 
 app.get("/api/persons/", (request, response) => {
-  Person.find({}).then((result) => {
-    result.forEach((person) => {
-      response.json(person);
-    });
-  });
+  Person.find({}).then((result) => reponse.json(result));
 });
 
 app.post("/api/persons/", (request, response) => {

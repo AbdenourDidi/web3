@@ -12,11 +12,7 @@ app.listen(PORT, () => {
 });
 
 app.get("/api/games/", (request, response) => {
-  Game.find({}).then((result) => {
-    result.forEach((game) => {
-      response.json(game);
-    });
-  });
+  Game.find({}).then((result) => response.json(result));
 });
 
 app.post("/api/games/", (request, response) => {
