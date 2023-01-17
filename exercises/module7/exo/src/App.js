@@ -1,14 +1,5 @@
 import { useState, useEffect } from "react";
-import { Input } from "antd";
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useMatch,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Link, useMatch, useNavigate } from "react-router-dom";
 
 const Menu = () => {
   const padding = {
@@ -16,27 +7,15 @@ const Menu = () => {
   };
   return (
     <div>
-      <Link style={padding} to="/">
+      <Link to="/" style={padding}>
         anecdotes
       </Link>
-      <Link style={padding} to="create">
+      <Link to="create" style={padding}>
         create new
       </Link>
-      <Link style={padding} to="about">
+      <Link to="about" style={padding}>
         about
       </Link>
-    </div>
-  );
-};
-
-const Anecdote = ({ anecdote }) => {
-  return (
-    <div>
-      <h2>{anecdote.content}</h2>
-      <p>has {anecdote.votes} votes</p>
-      <p>
-        for more info see <a href={anecdote.info}> {anecdote.info}</a>
-      </p>
     </div>
   );
 };
@@ -51,6 +30,16 @@ const AnecdoteList = ({ anecdotes }) => (
         </li>
       ))}
     </ul>
+  </div>
+);
+
+const Anecdote = ({ anecdote }) => (
+  <div>
+    <h2>{anecdote.content}</h2>
+    <p>has {anecdote.vote} votes</p>
+    <p>
+      for more info see <a href={anecdote.info}>{anecdote.info}</a>
+    </p>
   </div>
 );
 
@@ -88,10 +77,11 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
+  const navigate = useNavigate();
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
-  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
@@ -110,7 +100,7 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <Input
+          <input
             name="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -118,7 +108,7 @@ const CreateNew = (props) => {
         </div>
         <div>
           author
-          <Input
+          <input
             name="author"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
@@ -126,7 +116,7 @@ const CreateNew = (props) => {
         </div>
         <div>
           url for more info
-          <Input
+          <input
             name="info"
             value={info}
             onChange={(e) => setInfo(e.target.value)}
@@ -163,21 +153,7 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote));
   };
 
-  const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
-
-  const vote = (id) => {
-    const anecdote = anecdoteById(id);
-
-    const voted = {
-      ...anecdote,
-      votes: anecdote.votes + 1,
-    };
-
-    setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
-  };
-
   const match = useMatch("/anecdotes/:id");
-
   const anecdote = match
     ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
     : null;
@@ -199,11 +175,11 @@ const App = () => {
           element={<Anecdote anecdote={anecdote} />}
         />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+        <Route path="/about" element={<About />} />
         <Route
           path="/create"
           element={<CreateNew addNew={addNew} notif={setNotification} />}
         />
-        <Route path="/about" element={<About />} />
       </Routes>
       <Footer />
     </div>
