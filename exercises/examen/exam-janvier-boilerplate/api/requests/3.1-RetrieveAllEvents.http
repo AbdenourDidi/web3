@@ -1,0 +1,11 @@
+@hostname = localhost
+@port = 3001
+@host = http://{{hostname}}:{{port}}
+@eventId = 63c85b3df6d6c1e816c106a1
+###
+GET {{host}}/api/events HTTP/1.1
+Accept: application/json
+
+###
+GET {{host}}/api/events/{{eventId}} HTTP/1.1
+Accept: application/json
